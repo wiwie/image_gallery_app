@@ -10,9 +10,7 @@ class ImagesController < ApplicationController
 		if width
 			# if the user requests the original size, then we set width to nil here.
 			# it will then be set to the larger dimensions below
-			if width == 'orig'
-				width = nil
-			else
+			if not width == 'orig'
 				width = width.to_i
 			end
 		else
@@ -21,6 +19,11 @@ class ImagesController < ApplicationController
 
 		if path.to_s.include? Rails.application.config.image_folder_path
 			dims = FastImage.size(path.to_s)
+
+			# if the user requests the original size, set it to the larger dimension here.
+			if width == 'orig'
+				width = dims.max
+			end
 
 			if dims.max > width
 				t_path = path + '.thumb' + '_' + width.to_s
