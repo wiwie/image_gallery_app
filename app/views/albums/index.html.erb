@@ -220,7 +220,13 @@ initPhotoSwipeFromDOM('.my-gallery');
 
 <h1>Album /<%= params[:path] %></h1>
 <ul>
-    <li><%= link_to '..', url_for(:controller => :albums, :action => :index, :path => params.has_key?(:path) ? params[:path].rpartition('/').first + '/' : '/') %></li>
+    <%= params[:path].rpartition('/') %>
+    <% if params.has_key?(:path) %>
+        <% new_path = params[:path].rpartition('/').first %>
+    <% else %>
+        <% new_path = '/' %>
+    <% end %>
+    <li><%= link_to '..', url_for(:controller => :albums, :action => :index, :path => new_path) %></li>
 <% @folders.each do |folder| %>
     <li><%= link_to folder, url_for(:controller => :albums, :action => :index, :path => File.join(params.has_key?(:path) ? params[:path] : '/', folder)) %></li>
 <% end %>
