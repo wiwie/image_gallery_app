@@ -51,6 +51,7 @@ class ImagesController < ApplicationController
 	end
 
 	def rotate_and_get_rotated_path(path)
+		return_path = path
 		rotated_path = path + '.rot'
 		if not File.exists?(rotated_path)
 			img = Magick::Image.read(path).first
@@ -58,13 +59,16 @@ class ImagesController < ApplicationController
 			# the image needed to be rotated
 			if rot_img
 				rot_img.write(rotated_path)
-				return rotated_path
+				rot_img.destroy!
+				return_path = rotated_path
 			else
-				return path
+				return_path = path
 			end
+			img.destroy!
 		else
-			return rotated_path
+			return_path = rotated_path
 		end
+		return return_path
 	end
 
 	def serve_thumbnail
