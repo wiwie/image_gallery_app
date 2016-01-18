@@ -8,7 +8,13 @@ class ImagesController < ApplicationController
 		path = params[:filename]
 		width = params[:width]
 		if width
-			width = width.to_i
+			# if the user requests the original size, then we set width to nil here.
+			# it will then be set to the larger dimensions below
+			if width == 'orig'
+				width = nil
+			else
+				width = width.to_i
+			end
 		else
 			width = 1024
 		end
