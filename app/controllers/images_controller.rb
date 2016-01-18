@@ -58,6 +58,7 @@ class ImagesController < ApplicationController
 				rot_img = img.auto_orient
 				rot_img.write(rotated_path)
 			rescue
+			ensure
 				if img
 					img.destroy!
 				end
