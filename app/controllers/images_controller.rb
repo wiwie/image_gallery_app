@@ -54,10 +54,17 @@ class ImagesController < ApplicationController
 		rotated_path = path + '.rot'
 		if not File.exists?(rotated_path)
 			img = Magick::Image.read(path).first
-			rot_img = img.auto_orient
-			rot_img.write(rotated_path)
-			img.destroy!
-			rot_img.destroy!
+			begin
+				rot_img = img.auto_orient
+				rot_img.write(rotated_path)
+			rescue
+				if img
+					img.destroy!
+				end
+				if rot_img
+					rot_img.destroy!
+				end
+			end
 		end
 		return rotated_path
 	end
