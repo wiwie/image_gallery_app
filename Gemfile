@@ -45,6 +45,9 @@ group :development do
   gem 'spring'
 end
 
+gem 'jquery-ui-rails'
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'photoswipe-rails'
 gem 'rmagick'
 gem 'fastimage'
+gem "font-awesome-rails"

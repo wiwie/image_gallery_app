@@ -6,6 +6,9 @@ class ImagesController < ApplicationController
 
 	def serve
 		path = File.join(Rails.application.config.image_folder_path,params[:filename])
+
+		path = rotate_and_get_rotated_path(path)
+
 		width = params[:width]
 		if width
 			# if the user requests the original size, then we set width to nil here.
@@ -47,8 +50,27 @@ class ImagesController < ApplicationController
 	      :x_sendfile => true )
 	end
 
+	def rotate_and_get_rotated_path(path)
+		rotated_path = path + '.rot'
+		if not File.exists?(rotated_path)
+			img = Magick::Image.read(path).first
+			rot_img = img.auto_orient!
+			# the image needed to be rotated
+			if rot_img
+				rot_img.write(rotated_path)
+				return rotated_path
+			else
+				return path
+			end
+		else
+			return rotated_path
+		end
+	end
+
 	def serve_thumbnail
 		path = File.join(Rails.application.config.image_folder_path, "#{params[:filename]}")
+
+		path = rotate_and_get_rotated_path(path)
 
 		t_path = path + '.thumb'
 		if not File.exists?(t_path)
