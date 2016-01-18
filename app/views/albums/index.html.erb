@@ -220,7 +220,6 @@ initPhotoSwipeFromDOM('.my-gallery');
 
 <h1>Album /<%= params[:path] %></h1>
 <ul>
-    <%= params[:path].rpartition('/') %>
     <% if params.has_key?(:path) %>
         <% new_path = params[:path].rpartition('/').first %>
     <% else %>
@@ -235,7 +234,7 @@ initPhotoSwipeFromDOM('.my-gallery');
 <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
     <% @files.each do |f, dims| %>
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-        <a href="/serve_image?filename=<%= f.to_s %>" itemprop="contentUrl" data-size="<%= dims[0] %>x<%= dims[1] %>">
+        <a href="/serve_image?filename=<%= f.to_s %>&width=1024" itemprop="contentUrl" data-size="<%= dims[0] %>x<%= dims[1] %>">
             <img src="/serve_thumbnail?filename=<%= f.to_s %>" itemprop="thumbnail" alt="Image description" />
         </a>
     </figure>
