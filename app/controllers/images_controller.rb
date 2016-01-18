@@ -9,14 +9,12 @@ class ImagesController < ApplicationController
 		width = params[:width]
 		if width
 			width = width.to_i
+		else
+			width = 1024
 		end
 
 		if path.to_s.include? Rails.application.config.image_folder_path
 			dims = FastImage.size(path.to_s)
-
-			if not width
-				width = dims.max
-			end
 
 			if dims.max > width
 				t_path = path + '.thumb' + '_' + width.to_s
