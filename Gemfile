@@ -51,3 +51,4 @@ gem 'photoswipe-rails'
 gem 'rmagick'
 gem 'fastimage'
 gem "font-awesome-rails"
+gem 'fancybox2-rails'

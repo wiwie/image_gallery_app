@@ -14,5 +14,6 @@
  *= require_tree .
  *= require photoswipe
  *= require font-awesome
+ *= require fancybox
   *= require_self
  */

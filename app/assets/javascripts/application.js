@@ -15,4 +15,5 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require photoswipe
+//= require fancybox
 //= require_tree .

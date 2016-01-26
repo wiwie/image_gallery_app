@@ -38,6 +38,15 @@
   </head>
   <body>
 
+    <%= nav_bar brand: 'Photo App', responsive: true do %>
+      <%= menu_group pull: :right do %>
+          <%= drop_down fa_icon(:tools) + " Operations"  do %>
+            <%#= menu_item fa_icon("long-arrow-right") + " " + I18n.t("your_associations"), url_for([current_user, UserAssoziation]) %>
+            <%#= menu_item fa_icon("sign-out") + " " + I18n.t("logout"), destroy_user_session_path, :method => 'delete' %>
+          <% end %>
+      <% end %>
+  <% end %>
+
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
