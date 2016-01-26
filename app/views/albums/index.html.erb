@@ -26,7 +26,7 @@ $(document).ready(function() {
             },
             afterLoad: function(current, previous) {
                 if (jumped) {
-                    window.history.pushState("object or string", "Title", "?pid=" + current.index + <% if params.has_key?(:path) %>"&path=<%= params[:path] %>"<% end %>);
+                    window.history.pushState("object or string", "Title", "?pid=" + current.index <% if params.has_key?(:path) %>+ "&path=<%= params[:path] %>"<% end %>);
                 }
             }
         });
@@ -47,7 +47,7 @@ $(document).ready(function() {
             },
             'type' : 'image',
             afterLoad: function(current, previous) {
-                window.history.pushState("object or string", "Title", "?pid=" + current.index + <% if params.has_key?(:path) %>"&path=<%= params[:path] %>"<% end %>);
+                window.history.pushState("object or string", "Title", "?pid=" + current.index <% if params.has_key?(:path) %>+ "&path=<%= params[:path] %>"<% end %>);
             }
         });
     <% end %>
