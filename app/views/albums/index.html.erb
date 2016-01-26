@@ -69,7 +69,7 @@ $(document).ready(function() {
 </ul>
 <h2>Bilder:</h2>
 <% @files.each do |f, dims| %>
-<a class="fancybox" rel="gallery1" href="http://localhost:3000/serve_image?filename=<%= f.to_s %>&width=1024" title="Morning Godafoss (Brads5)">
-    <img src="http://localhost:3000/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
+<a class="fancybox" rel="gallery1" href="/serve_image?filename=<%= f.to_s %>&width=1024" title="Morning Godafoss (Brads5)">
+    <img src="/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
 </a>
 <% end %>
