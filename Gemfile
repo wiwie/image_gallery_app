@@ -52,3 +52,4 @@ gem 'rmagick'
 gem 'fastimage'
 gem "font-awesome-rails"
 gem 'fancybox2-rails'
+gem 'jquery-turbolinks'

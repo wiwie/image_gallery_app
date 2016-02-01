@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
+//= require jquery.turbolinks
 //= require photoswipe
 //= require fancybox
 //= require_tree .
