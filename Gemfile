@@ -53,3 +53,6 @@ gem 'fastimage'
 gem "font-awesome-rails"
 gem 'fancybox2-rails'
 gem 'jquery-turbolinks'
+gem "jquery-fileupload-rails"
+gem 'bootstrap_form'
+gem 'devise'

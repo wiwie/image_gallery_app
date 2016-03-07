@@ -1,0 +1,5 @@
+<%= bootstrap_form_for(@album) do |f| %>
+  <%= f.hidden_field(:path, :value => params[:path]) %>
+  <%= f.text_field :name %><br />
+  <%= f.submit %>
+<% end %>

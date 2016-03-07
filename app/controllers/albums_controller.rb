@@ -17,4 +17,14 @@ class AlbumsController < ApplicationController
 			.sort.collect { |p| [p.to_s.gsub(Rails.application.config.image_folder_path, ''), FastImage.size(p.to_s)
 ] }
 	end
+
+	def new
+		@album = Album.new
+	end
+
+	def create
+		newDir = File.join(Rails.application.config.image_folder_path, params[:album][:path],params[:album][:name])
+		Dir.mkdir(newDir) unless File.exists?(newDir)
+		redirect_to(action: 'index', path: File.join(params[:album][:path],params[:album][:name]))
+	end
 end

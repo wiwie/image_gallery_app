@@ -52,17 +52,16 @@ class ImagesController < ApplicationController
 
 	def rotate_and_get_rotated_path(path)
 		pn = Pathname.new(path)
-		
+
 		dir = pn.dirname
-		filename = pn.basename
+		ext = File.extname(pn)
+		filename = File.basename(pn, ext)
 
 		thumb_dir = File.join(dir,'.thumb')
 
 		Dir.mkdir(thumb_dir) unless File.exists?(thumb_dir)
 
-		rotated_path = File.join(thumb_dir,filename.to_s + '.rot')
-
-		puts rotated_path
+		rotated_path = File.join(thumb_dir,filename.to_s + '.rot' + ext)
 
 		if not File.exists?(rotated_path)
 			img = Magick::Image.read(path).first
@@ -87,7 +86,11 @@ class ImagesController < ApplicationController
 
 		path = rotate_and_get_rotated_path(path)
 
-		t_path = path + '.thumb'
+		dir = File.dirname(path)
+		ext = File.extname(path)
+		filename = File.basename(path, ext)
+
+		t_path = File.join(dir, filename + '.thumb' + ext)
 		if not File.exists?(t_path)
 			thumbnail(path,t_path, 128)
 		end

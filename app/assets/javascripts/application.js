@@ -11,10 +11,13 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
 //= require jquery.turbolinks
 //= require photoswipe
 //= require fancybox
+//= require jquery-fileupload/basic
+//= require jquery-fileupload/jquery-ui
 //= require_tree .

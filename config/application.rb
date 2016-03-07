@@ -24,5 +24,7 @@ module ImageGalleryApp
     config.active_record.raise_in_transactional_callbacks = true
 
     config.image_folder_path = '/home/wiwiec/Pictures'
+    config.node_host = "localhost"
+    config.node_port = "8888"
   end
 end

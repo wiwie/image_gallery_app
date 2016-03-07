@@ -15,5 +15,8 @@
  *= require photoswipe
  *= require font-awesome
  *= require fancybox
-  *= require_self
+ *= require jquery.fileupload
+ *= require jquery.fileupload-ui
+ *= require rails_bootstrap_forms
+ *= require_self
  */
