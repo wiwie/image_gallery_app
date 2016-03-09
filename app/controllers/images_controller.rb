@@ -61,7 +61,8 @@ class ImagesController < ApplicationController
 
 		Dir.mkdir(thumb_dir) unless File.exists?(thumb_dir)
 
-		rotated_path = File.join(thumb_dir,filename.to_s + '.rot' + ext)
+		#rotated_path = File.join(thumb_dir,filename.to_s + '.rot' + ext)
+		rotated_path = path
 
 		if not File.exists?(rotated_path)
 			img = Magick::Image.read(path).first
@@ -90,7 +91,10 @@ class ImagesController < ApplicationController
 		ext = File.extname(path)
 		filename = File.basename(path, ext)
 
-		t_path = File.join(dir, filename + '.thumb' + ext)
+		thumb_dir = File.join(dir,'.thumb')
+		Dir.mkdir(thumb_dir) unless File.exists?(thumb_dir)
+
+		t_path = File.join(thumb_dir, filename + '.thumb' + ext)
 		if not File.exists?(t_path)
 			thumbnail(path,t_path, 128)
 		end
@@ -113,7 +117,7 @@ class ImagesController < ApplicationController
 			thumbnail_wider = target_aspect > source_aspect
 
 			factor = thumbnail_wider ? width.to_f / cols : height.to_f / rows
-			img.thumbnail!(factor)
+			img.sample!(factor)
 			img.crop!(CenterGravity, width, height)
 
 			FileUtils.mkdir_p(File.dirname(target))
