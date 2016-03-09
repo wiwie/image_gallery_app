@@ -101,21 +101,28 @@ class ImagesController < ApplicationController
 	end
 	
     def thumbnail(source, target, width, height = nil)
-      return nil unless File.file?(source)
-      height ||= width
+		return nil unless File.file?(source)
+		height ||= width
 
-      img = Image.read(source).first
-      rows, cols = img.rows, img.columns
+		img = Image.read(source).first
+		begin
+			rows, cols = img.rows, img.columns
 
-      source_aspect = cols.to_f / rows
-      target_aspect = width.to_f / height
-      thumbnail_wider = target_aspect > source_aspect
+			source_aspect = cols.to_f / rows
+			target_aspect = width.to_f / height
+			thumbnail_wider = target_aspect > source_aspect
 
-      factor = thumbnail_wider ? width.to_f / cols : height.to_f / rows
-      img.thumbnail!(factor)
-      img.crop!(CenterGravity, width, height)
+			factor = thumbnail_wider ? width.to_f / cols : height.to_f / rows
+			img.thumbnail!(factor)
+			img.crop!(CenterGravity, width, height)
 
-      FileUtils.mkdir_p(File.dirname(target))
-      img.write(target) { self.quality = 75 }
+			FileUtils.mkdir_p(File.dirname(target))
+			img.write(target) { self.quality = 75 }
+		rescue
+		ensure
+			if img
+				img.destroy!
+			end
+		end
     end
 end
