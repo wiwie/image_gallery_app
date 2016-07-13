@@ -1,0 +1,7 @@
+<%= bootstrap_form_for(@perm) do |f| %>
+  <%= f.collection_select :user_id, User.all, :id, :email %>
+  <%= f.collection_select :album_id, Album.all, :id, :full_path %><br />
+  <%= f.check_box :can_read %>
+  <%= f.check_box :can_edit %>
+  <%= f.submit %>
+<% end %>

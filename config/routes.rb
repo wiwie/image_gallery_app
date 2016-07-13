@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   #   end
   resources :albums
   resources :homes
+  resources :user_album_permissions
   match '/serve_image' => 'images#serve', via: :get
   match '/serve_thumbnail' => 'images#serve_thumbnail', via: :get
 end

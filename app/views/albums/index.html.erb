@@ -178,16 +178,48 @@ $(function () {
 </script>
 
 <h1>Album /<%= params[:path] %></h1>
+<% if @album %>
+    <% if @album.is_public %>
+        <b>This album is public</b><br/>
+    <% elsif @album.user %>
+        <% if @album.user == current_user %>
+            <b>This is your album</b>
+            (<%= link_to "Zugriffsrechte erteilen", new_user_album_permission_path(:album_id => @album) %>)<br/>
+        <% else %>
+            <b><%= @album.user.email %></b><br/>
+        <% end %>
+    <% end %>
+<% end %>
+You can: 
+<% if @can_read %>
+<b>read</b>
+<% end %>
+<% if @can_write %>
+and <b>write</b>
+<% end %>
+<br/>
+
 <% if params.has_key?(:path) and params[:path] != '' %>
     <% new_path = params[:path].rpartition('/').first %>
     <%= link_to 'zurück (' + new_path + '/)', url_for(:controller => :albums, :action => :index, :path => new_path) %>
 <% else %>
     <% new_path = '/' %>
 <% end %>
-<% if user_signed_in? %>
+<% if @can_read %>
+    <% if @folders.size > 0 %>
+    <h2>Unteralben:</h2>
+    <ul class="list-inline">
+    <% @folders.each do |folder| %>
+        <li><%= link_to folder, url_for(:controller => :albums, :action => :index, :path => File.join(params.has_key?(:path) ? params[:path] : '/', folder)) %></li>
+    <% end %>
+    </ul>
+    <% end %>
+<% end %>
+<% if user_signed_in? and @can_write %>
 <p>
-<%= link_to "Neues Album", new_album_path(:path => params[:path]) %>
+<%= link_to "Neues Album erstellen", new_album_path(:path => params[:path]) %>
 </p>
+<h2>Bilder Upload</h2>
 <!--<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">-->
 <form id="fileupload" action="//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -226,15 +258,11 @@ $(function () {
         <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
     </form>
 <% end %>
-<h2>Unteralben:</h2>
-<ul class="list-inline">
-<% @folders.each do |folder| %>
-    <li><%= link_to folder, url_for(:controller => :albums, :action => :index, :path => File.join(params.has_key?(:path) ? params[:path] : '/', folder)) %></li>
-<% end %>
-</ul>
-<h2>Bilder:</h2>
-<% @files.each do |f, dims| %>
-<a class="fancybox" rel="gallery1" href="/serve_image?filename=<%= f.to_s %>&width=1024" title="<%= f.to_s %>">
-    <img src="/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
-</a>
+<% if @can_read %>
+    <h2>Bilder:</h2>
+    <% @files.each do |f, dims| %>
+    <a class="fancybox" rel="gallery1" href="/serve_image?filename=<%= f.to_s %>&width=1024" title="<%= f.to_s %>">
+        <img src="/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
+    </a>
+    <% end %>
 <% end %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  album_id: 1
+  can_read: false
+  can_edit: false
+
+two:
+  user_id: 1
+  album_id: 1
+  can_read: false
+  can_edit: false

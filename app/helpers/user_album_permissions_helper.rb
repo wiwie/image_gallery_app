@@ -1,0 +1,2 @@
+module UserAlbumPermissionsHelper
+end
