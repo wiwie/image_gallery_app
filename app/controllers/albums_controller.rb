@@ -24,7 +24,7 @@ class AlbumsController < ApplicationController
 			@can_write = true
 		end
 		
-		@permissions = UserAlbumPermission.find_by user: current_user, album: @album
+		@permissions = UserAlbumPermission.find_by user_id: current_user.id, album_id: @album.id
 		if @permissions
 			@can_read = @permissions.can_read
 			@can_write = @permissions.can_edit

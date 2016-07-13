@@ -7,7 +7,14 @@ class UserAlbumPermissionsController < ApplicationController
 	end
 
 	def create
-		@perm = UserAlbumPermission.new(user_params)
+		p = user_params
+		@perm = UserAlbumPermission.find_by user_id: p[:user_id], album_id: p[:album_id]
+		if not @perm
+			@perm = UserAlbumPermission.new(p)
+		else
+			@perm.can_edit = p[:can_edit]
+			@perm.can_read = p[:can_read]
+		end
 		if @perm.save
 			redirect_to(controller: 'albums', action: 'index', path: File.join(@perm.album.path, @perm.album.name))
 		end
@@ -16,6 +23,6 @@ class UserAlbumPermissionsController < ApplicationController
   private
 
   def user_params
-    params.require(:user_album_permission).permit(:user_id, :album_id, :can_read, :can_write)
+    params.require(:user_album_permission).permit(:user_id, :album_id, :can_read, :can_edit)
   end
 end
