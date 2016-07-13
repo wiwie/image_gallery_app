@@ -15,19 +15,21 @@ class AlbumsController < ApplicationController
 		@can_read = false
 		@can_write = false
 
+		if @album and @album.is_public
+			@can_read = true
+		end
+		
 		if @album and @album.user == current_user
 			@can_read = true
 			@can_write = true
-		elsif @album and @album.is_public
-			@can_read = true
-		else
-			@permissions = UserAlbumPermission.find_by user: current_user, album: @album
-			if @permissions
-				@can_read = @permissions.can_read
-				@can_write = @permissions.can_edit
-			end
 		end
-
+		
+		@permissions = UserAlbumPermission.find_by user: current_user, album: @album
+		if @permissions
+			@can_read = @permissions.can_read
+			@can_write = @permissions.can_edit
+		end
+		
 		if not @can_read
 			@folders = []
 			@files = []
