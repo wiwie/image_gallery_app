@@ -15,9 +15,11 @@ class AlbumsController < ApplicationController
 		@can_read = false
 		@can_write = false
 
-		if @album and (@album.is_public or @album.user == current_user)
+		if @album and @album.user == current_user
 			@can_read = true
 			@can_write = true
+		elsif @album and @album.is_public
+			@can_read = true
 		else
 			@permissions = UserAlbumPermission.find_by user: current_user, album: @album
 			if @permissions
@@ -55,9 +57,19 @@ class AlbumsController < ApplicationController
 		end
 	end
 
+	def edit
+		@album = Album.find(params[:id])
+	end
+
+	def update
+		@album = Album.find(params[:id])
+		@album.update_attributes(user_params)
+		redirect_to(action: 'index', path: File.join(@album.path,@album.name))
+	end
+
   private
 
   def user_params
-    params.require(:album).permit(:path, :name)
+    params.require(:album).permit(:path, :name, :is_public)
   end
 end
