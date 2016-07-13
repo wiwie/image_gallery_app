@@ -1,0 +1,6 @@
+<%= bootstrap_form_for(@album) do |f| %>
+  <%= f.text_field :path, :value => @album.path %>
+  <%= f.text_field :name, :value => @album.name %>
+  <%= f.check_box :is_public, :value => @album.is_public %>
+  <%= f.submit %>
+<% end %>
