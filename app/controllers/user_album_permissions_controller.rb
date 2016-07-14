@@ -21,7 +21,7 @@ class UserAlbumPermissionsController < ApplicationController
 			@perm.can_read = p[:can_read]
 		end
 		if @perm.save
-			redirect_to(controller: 'albums', action: 'index', path: File.join(@perm.album.path, @perm.album.name))
+			redirect_to(controller: 'albums', action: 'show', id: @perm.album)
 		end
 	end
 

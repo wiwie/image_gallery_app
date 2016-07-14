@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160713210816) do
+ActiveRecord::Schema.define(version: 20160714214902) do
 
   create_table "albums", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160713210816) do
     t.string   "path"
     t.boolean  "is_public"
     t.integer  "user_id"
+    t.integer  "album_id"
   end
 
   create_table "user_album_permissions", force: :cascade do |t|
