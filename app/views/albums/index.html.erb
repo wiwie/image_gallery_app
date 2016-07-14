@@ -262,7 +262,7 @@ and <b>write</b>
     <h2>Bilder:</h2>
     <% @files.each do |f, dims| %>
     <a class="fancybox" rel="gallery1" href="/serve_image?filename=<%= f.to_s %>&width=1024" title="<%= f.to_s %>">
-        <img src="/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
+        <img class="photo_thumbnail" src="/serve_thumbnail?filename=<%= f.to_s %>" alt="" />
     </a>
     <% end %>
 <% end %>

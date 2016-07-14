@@ -1,3 +1,11 @@
 // Place all the styles related to the albums controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.photo_thumbnail {
+	padding: 5px;
+	background: white;
+	border: 1px solid #BBB;
+	margin: 7px 14px 7px 0;
+	width: 160px;
+}
