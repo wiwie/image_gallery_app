@@ -8,14 +8,13 @@ class AlbumsController < ApplicationController
 	def show
 		@album = Album.find(params[:id])
 		@root_dir = Rails.application.config.image_folder_path
+		puts @root_dir
+		puts @album.full_path
 		#if params.has_key?(:path)
 			# we do not allow to go out of our directory
 			@root_dir = File.join(@root_dir,@album.full_path).gsub('..','.')
 		#end
-
-		spl = @root_dir.gsub(Rails.application.config.image_folder_path,'').rpartition("/")
-		
-		#@album = Album.find_by path: spl[0], name: spl[2]
+		puts @root_dir
 
 		@can_read = false
 		@can_write = false
