@@ -4,6 +4,11 @@ class UserAlbumPermissionsController < ApplicationController
 		if params[:album_id]
 			@perm.album = Album.find(params[:album_id])
 		end
+		if current_user
+			@albums = Album.where(:user => current_user)
+		else
+			@albums = []
+		end
 	end
 
 	def create
