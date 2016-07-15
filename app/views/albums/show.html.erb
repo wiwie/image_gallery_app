@@ -186,7 +186,7 @@ $(function () {
         <% if @album.user == current_user %>
             <b>This is your album</b>
             (<%= link_to "Editieren", edit_album_path(@album) %>, 
-            <%= link_to "Zugriffsrechte erteilen", new_user_album_permission_path(:album_id => @album) %>)<br/>
+            <%= link_to "Zugriffsrechte", user_album_permissions_path(:album_id => @album) %>)<br/>
         <% else %>
             <b><%= @album.user.email %></b><br/>
         <% end %>

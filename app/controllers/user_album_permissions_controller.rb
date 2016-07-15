@@ -25,6 +25,39 @@ class UserAlbumPermissionsController < ApplicationController
 		end
 	end
 
+	def index
+		@album = Album.find(params[:album_id])
+		if @album.user != current_user
+			flash[:alert] = "You are not the owner of this album."
+		else
+			@permissions = UserAlbumPermission.where album_id: @album
+		end
+	end
+
+	def edit
+		@perm = UserAlbumPermission.find(params[:id])
+
+		if current_user
+			@albums = Album.where(:user => current_user)
+		else
+			@albums = []
+		end
+	end
+
+	def update
+		@perm = UserAlbumPermission.find(params[:id])
+
+		@perm.update_attributes(user_params)
+		redirect_to(action: 'index', album_id: @perm.album)
+	end
+
+	def destroy
+		@perm = UserAlbumPermission.find(params[:id])
+		@album = @perm.album
+		@perm.destroy
+		redirect_to(controller: 'albums', action: 'show', id: @album)
+	end
+
   private
 
   def user_params

@@ -1,0 +1,12 @@
+<h1>Album Permissions for '<%= @album.full_path %>'</h1>
+<table class="table">
+	<thead>
+		<tr><th>Benutzer</th><th>Kann Lesen?</th><th>Kann Schreiben?</th><th></th></tr>
+	</thead>
+<% @permissions.each do |perm| %>
+<tr><td><%= perm.user.email %></td><td><%= perm.can_read %></td><td><%= perm.can_edit %></td><td><%= link_to 'Editieren', edit_user_album_permission_path(perm) %></td><td><%= button_to 'Löschen', perm, :method => :delete %></td></tr>
+<% end %>
+</table>
+
+<p><%= link_to "Neue Zugriffsrechte erteilen", new_user_album_permission_path(:album_id => @album) %></p>
+<p><%= link_to "<- Zum Album", url_for(:controller => 'albums', :action => 'show', :id => @album) %></p>
