@@ -261,9 +261,9 @@ and <b>write</b>
 <% end %>
 <% if @can_read %>
     <h2>Bilder:</h2>
-    <% @files.each do |f, dims| %>
-    <a class="fancybox" rel="gallery1" href="/serve_image?filename=<%= f.to_s.gsub('&','%26') %>&width=1024" title="<%= f.to_s.gsub('&','%26') %>">
-        <img class="photo_thumbnail" src="/serve_thumbnail?filename=<%= f.to_s.gsub('&','%26') %>" alt="" />
+    <% @images.each do |image| %>
+    <a class="fancybox" rel="gallery1" href="/serve_image?id=<%= image.id %>&width=1024" title="<%= image.full_path.gsub('&','%26') %>">
+        <img class="photo_thumbnail" src="/serve_thumbnail?id=<%= image.id %>" alt="" />
     </a>
     <% end %>
 <% end %>

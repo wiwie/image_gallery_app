@@ -1,6 +1,7 @@
 class Album < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :album
+	has_many :my_images
 
 	def path
 		tmp_album = self.album

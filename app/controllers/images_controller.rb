@@ -1,13 +1,40 @@
-require 'RMagick'
+require 'rmagick'
 require 'fileutils'
 
 class ImagesController < ApplicationController
 	include Magick
 
-	def serve
-		path = File.join(Rails.application.config.image_folder_path,params[:filename])
+	def ensure_processed(myImg)
+		if not myImg.processed
+			img = Magick::Image.read(File.join(Rails.application.config.image_folder_path, myImg.full_path)).first
+			begin
+				rot_img = img.auto_orient!
+				# if this is nil, the image was properly oriented before
+				if rot_img
+					# the image is now properly oriented
+					# overwrite original image
+					rot_img.write(newFile.to_s)
+				end
+			rescue
+			ensure
+				if img
+					img.destroy!
+				end
+				if rot_img
+					rot_img.destroy!
+				end
+			end
+			myImg.processed = true
+			myImg.save
+		end
+	end
 
-		path = rotate_and_get_rotated_path(path)
+	def serve
+		img = MyImage.find(params[:id])
+		ensure_processed(img)
+
+		path = File.join(Rails.application.config.image_folder_path,
+			img.full_path)
 
 		width = params[:width]
 		if width
@@ -28,7 +55,12 @@ class ImagesController < ApplicationController
 		end
 
 		if dims.max > width
-			t_path = path + '.thumb' + '_' + width.to_s
+			pn = Pathname.new(path)
+			ext = File.extname(pn)
+			filename = File.basename(pn, ext)
+			thumb_dir = File.join(Rails.application.config.image_folder_path, img.album.full_path, '.thumb')
+			t_path = File.join(thumb_dir, filename + '_' + width.to_s + ext)
+			
 			if not File.exists?(t_path)
 				if dims[0] > dims[1]
 					factor = dims[0]/width.to_f
@@ -50,51 +82,17 @@ class ImagesController < ApplicationController
 	      :x_sendfile => true )
 	end
 
-	def rotate_and_get_rotated_path(path)
-		pn = Pathname.new(path)
+	def serve_thumbnail
+		img = MyImage.find(params[:id])
+		ensure_processed(img)
 
-		dir = pn.dirname
+		path = File.join(Rails.application.config.image_folder_path, img.full_path)
+		pn = Pathname.new(path)
 		ext = File.extname(pn)
 		filename = File.basename(pn, ext)
-
-		thumb_dir = File.join(dir,'.thumb')
-
-		Dir.mkdir(thumb_dir) unless File.exists?(thumb_dir)
-
-		#rotated_path = File.join(thumb_dir,filename.to_s + '.rot' + ext)
-		rotated_path = path
-
-		if not File.exists?(rotated_path)
-			img = Magick::Image.read(path).first
-			begin
-				rot_img = img.auto_orient
-				rot_img.write(rotated_path)
-			rescue
-			ensure
-				if img
-					img.destroy!
-				end
-				if rot_img
-					rot_img.destroy!
-				end
-			end
-		end
-		return rotated_path
-	end
-
-	def serve_thumbnail
-		path = File.join(Rails.application.config.image_folder_path, "#{params[:filename]}")
-
-		path = rotate_and_get_rotated_path(path)
-
-		dir = File.dirname(path)
-		ext = File.extname(path)
-		filename = File.basename(path, ext)
-
-		thumb_dir = File.join(dir,'.thumb')
-		Dir.mkdir(thumb_dir) unless File.exists?(thumb_dir)
-
-		t_path = File.join(thumb_dir, filename + '.thumb' + ext)
+		thumb_dir = File.join(Rails.application.config.image_folder_path, img.album.full_path, '.thumb')
+		t_path = File.join(thumb_dir, filename + '_thumb_' + 128.to_s + ext)
+		
 		if not File.exists?(t_path)
 			thumbnail(path,t_path, 128)
 		end

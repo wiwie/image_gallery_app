@@ -43,13 +43,25 @@ class AlbumsController < ApplicationController
 			flash[:alert] = "You do not have permissions to view this album."
 		else
 			flash[:alert] = ""
-			#@folders = Pathname.new(@root_dir).children.select { |c| c.directory? and c.basename.to_s != '.thumb' }.collect { |p| p.to_s.sub(@root_dir,'') }.sort
-			#@folders = Album.where(:path => @album.full_path)
 			@folders = Album.where(:album => @album)
 			@files = Pathname.new(@root_dir).children
 				.select { |c| c.to_s.downcase.end_with?('jpg') or c.to_s.downcase.end_with?('jpeg') or c.to_s.downcase.end_with?('png') }
-				.sort.collect { |p| [p.to_s.gsub(Rails.application.config.image_folder_path, ''), FastImage.size(p.to_s)
-] }
+				.sort
+
+			# which images do we already know?
+			@images = MyImage.where(:album => @album)
+			# which images are new?
+			@imagesNames = @images.collect{|x| x.name}
+			@newFiles = @files.select{|f| not @imagesNames.include?(f.basename.to_s)}
+			# create image objects for each new file
+			puts "Creating new image objects in db"
+			puts @newFiles.length
+			@newFiles.each do |newFile|
+				dims = FastImage.size(newFile)
+
+				newImageObject = MyImage.create(album: @album, width: dims[0], height: dims[1], name: newFile.basename.to_s)
+			end
+			@images = MyImage.where(:album => @album)
 		end
 	end
 
