@@ -13,7 +13,7 @@ class ImagesController < ApplicationController
 				if rot_img
 					# the image is now properly oriented
 					# overwrite original image
-					rot_img.write(newFile.to_s)
+					rot_img.write(File.join(Rails.application.config.image_folder_path, myImg.full_path))
 				end
 			rescue
 			ensure
@@ -27,11 +27,12 @@ class ImagesController < ApplicationController
 			myImg.processed = true
 			myImg.save
 		end
+		return myImg
 	end
 
 	def serve
 		img = MyImage.find(params[:id])
-		ensure_processed(img)
+		img = ensure_processed(img)
 
 		path = File.join(Rails.application.config.image_folder_path,
 			img.full_path)
