@@ -33,147 +33,155 @@
 
 $(document).ready(function() {
     var jumped = false;
-    <% if params.has_key?(:pid) %>
-        $.fancybox($(".fancybox"), {
-            prevEffect  : 'none',
-            nextEffect  : 'none',
-            closeBtn        : true,
-            helpers : {
-                title   : {
-                    type: 'outside'
-                },
-                thumbs  : {
-                    width   : 50,
-                    height  : 50
-                },
-                buttons : {}
-            },
-            'type' : 'image',
-            afterShow: function(bla) {
-                if (!jumped) {
-                    $.fancybox.jumpto(<%= params[:pid] %>);
-                    jumped = true;
-                }
-            },
-            afterLoad: function(current, previous) {
-                if (jumped) {
-                    window.history.pushState("object or string", "Title", "?pid=" + current.index);
-                }
-            },
-            afterClose: function() {
-                    window.history.pushState("object or string", "Title", "?");
-            }
-        });
-    <% else %>
-        $(".fancybox").fancybox({
-            prevEffect  : 'none',
-            nextEffect  : 'none',
-            closeBtn        : true,
-            helpers : {
-                title   : {
-                    type: 'outside'
-                },
-                thumbs  : {
-                    width   : 50,
-                    height  : 50
-                },
-                buttons : {}
-            },
-            'type' : 'image',
-            afterLoad: function(current, previous) {
-                window.history.pushState("object or string", "Title", "?pid=" + current.index);
-            },
-            afterClose: function() {
-                    window.history.pushState("object or string", "Title", "?");
-            }
-        });
-    <% end %>
+    // <% if params.has_key?(:pid) %>
+    //     $.fancybox($(".fancybox"), {
+    //         prevEffect  : 'none',
+    //         nextEffect  : 'none',
+    //         closeBtn        : true,
+    //         helpers : {
+    //             title   : {
+    //                 type: 'outside'
+    //             },
+    //             thumbs  : {
+    //                 width   : 50,
+    //                 height  : 50
+    //             },
+    //             buttons : {}
+    //         },
+    //         'type' : 'image',
+    //         afterShow: function(bla) {
+    //             if (!jumped) {
+    //                 $.fancybox.jumpto(<%= params[:pid] %>);
+    //                 jumped = true;
+    //             }
+    //         },
+    //         afterLoad: function(current, previous) {
+    //             if (jumped) {
+    //                 window.history.pushState("object or string", "Title", "?pid=" + current.index);
+    //             }
+    //         },
+    //         afterClose: function() {
+    //                 window.history.pushState("object or string", "Title", "?");
+    //         }
+    //     });
+    // <% else %>
+    //     $(".fancybox").fancybox({
+    //         prevEffect  : 'none',
+    //         nextEffect  : 'none',
+    //         closeBtn        : true,
+    //         helpers : {
+    //             title   : {
+    //                 type: 'outside'
+    //             },
+    //             thumbs  : {
+    //                 width   : 50,
+    //                 height  : 50
+    //             },
+    //             buttons : {}
+    //         },
+    //         'type' : 'image',
+    //         afterLoad: function(current, previous) {
+    //             window.history.pushState("object or string", "Title", "?pid=" + current.index);
+    //         },
+    //         afterClose: function() {
+    //                 window.history.pushState("object or string", "Title", "?");
+    //         }
+    //     });
+    // <% end %>
 
-/*
- * jQuery File Upload Plugin JS Example
- * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2010, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
- */
+                $("#gallery").unitegallery({
+                        gallery_theme: "tiles",
+                        tile_enable_border:true,           //enable border of the tile
+                        tile_enable_outline: false,         //enable outline of the tile (works only together with the border)
+                        lightbox_type: "wide"                          //compact / wide - lightbox type
+                }); 
 
-/* global $, window */
+    /*
+     * jQuery File Upload Plugin JS Example
+     * https://github.com/blueimp/jQuery-File-Upload
+     *
+     * Copyright 2010, Sebastian Tschan
+     * https://blueimp.net
+     *
+     * Licensed under the MIT license:
+     * http://www.opensource.org/licenses/MIT
+     */
 
-$(function () {
-    'use strict';
+    /* global $, window */
 
-    // Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload({
-        // Uncomment the following to send cross-domain cookies:
-        //xhrFields: {withCredentials: true},
-        url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
-        downloadTemplateId: null
-    });
+    $(function () {
+        'use strict';
 
-    // Enable iframe cross-domain access via redirect option:
-    $('#fileupload').fileupload(
-        'option',
-        'redirect',
-        window.location.href.replace(
-            /\/[^\/]*$/,
-            '/cors/result.html?%s'
-        )
-    );
-
-    //if (window.location.hostname === 'blueimp.github.io') {
-        console.log(window.location.hostname);
-    if (window.location.hostname === 'bla') {
-        // Demo settings:
-        $('#fileupload').fileupload('option', {
-            //url: '//jquery-file-upload.appspot.com/',
-            url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
-            // Enable image resizing, except for Android and Opera,
-            // which actually support image resizing, but fail to
-            // send Blob objects via XHR requests:
-            disableImageResize: /Android(?!.*Chrome)|Opera/
-                .test(window.navigator.userAgent),
-            maxFileSize: 999000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
-        });
-        // Upload server status check for browsers with CORS support:
-        if ($.support.cors) {
-            $.ajax({
-                //url: '//jquery-file-upload.appspot.com/',
-                url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
-                type: 'HEAD'
-            }).fail(function () {
-                $('<div class="alert alert-danger"/>')
-                    .text('Upload server currently unavailable - ' +
-                            new Date())
-                    .appendTo('#fileupload');
-            });
-        }
-    } else {
-        // Load existing files:
-        $('#fileupload').addClass('fileupload-processing');
-        $('#fileupload').bind('fileuploadcompleted', function (e, data) {
-            $(data.result.files).each(function(i, f) {
-                console.log(f);
-            });
-        });
-        $.ajax({
+        // Initialize the jQuery File Upload widget:
+        $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: $('#fileupload').fileupload('option', 'url'),
-            dataType: 'json',
-            context: $('#fileupload')[0]
-        }).always(function () {
-            $(this).removeClass('fileupload-processing');
-        }).done(function (result) {
-            $(this).fileupload('option', 'done')
-                .call(this, $.Event('done'), {result: result});
+            url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
+            downloadTemplateId: null
         });
-    }
 
-});
+        // Enable iframe cross-domain access via redirect option:
+        $('#fileupload').fileupload(
+            'option',
+            'redirect',
+            window.location.href.replace(
+                /\/[^\/]*$/,
+                '/cors/result.html?%s'
+            )
+        );
+
+        //if (window.location.hostname === 'blueimp.github.io') {
+            console.log(window.location.hostname);
+        if (window.location.hostname === 'bla') {
+            // Demo settings:
+            $('#fileupload').fileupload('option', {
+                //url: '//jquery-file-upload.appspot.com/',
+                url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
+                // Enable image resizing, except for Android and Opera,
+                // which actually support image resizing, but fail to
+                // send Blob objects via XHR requests:
+                disableImageResize: /Android(?!.*Chrome)|Opera/
+                    .test(window.navigator.userAgent),
+                maxFileSize: 999000,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                limitConcurrentUploads: 5
+            });
+            // Upload server status check for browsers with CORS support:
+            if ($.support.cors) {
+                $.ajax({
+                    //url: '//jquery-file-upload.appspot.com/',
+                    url: '//<%= Rails.application.config.node_host %>:<%= Rails.application.config.node_port %>/',
+                    type: 'HEAD'
+                }).fail(function () {
+                    $('<div class="alert alert-danger"/>')
+                        .text('Upload server currently unavailable - ' +
+                                new Date())
+                        .appendTo('#fileupload');
+                });
+            }
+        } else {
+            // Load existing files:
+            $('#fileupload').addClass('fileupload-processing');
+            $('#fileupload').bind('fileuploadcompleted', function (e, data) {
+                $(data.result.files).each(function(i, f) {
+                    console.log(f);
+                });
+            });
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: $('#fileupload').fileupload('option', 'url'),
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
+        }
+
+    });
 });
 </script>
 
@@ -261,9 +269,17 @@ and <b>write</b>
 <% end %>
 <% if @can_read %>
     <h2>Bilder:</h2>
+    <!--<% @images.each do |image| %>
+        <a class="fancybox" rel="gallery1" href="/serve_image?id=<%= image.id %>&width=1024" title="<%= image.full_path.gsub('&','%26') %>">
+            <img class="photo_thumbnail" src="/serve_thumbnail?id=<%= image.id %>" alt="" />
+        </a>
+    <% end %>-->
+    <div id="gallery" style="display:none;">
     <% @images.each do |image| %>
-    <a class="fancybox" rel="gallery1" href="/serve_image?id=<%= image.id %>&width=1024" title="<%= image.full_path.gsub('&','%26') %>">
-        <img class="photo_thumbnail" src="/serve_thumbnail?id=<%= image.id %>" alt="" />
-    </a>
+            <img src="/serve_thumbnail?id=<%= image.id %>"
+                data-image="/serve_image?id=<%= image.id %>&width=1024"
+                data-description="bla"
+                alt="Bla" />
     <% end %>
+    </div>
 <% end %>

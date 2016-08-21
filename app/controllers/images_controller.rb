@@ -91,10 +91,10 @@ class ImagesController < ApplicationController
 		ext = File.extname(pn)
 		filename = File.basename(pn, ext)
 		thumb_dir = File.join(Rails.application.config.image_folder_path, img.album.full_path, '.thumb')
-		t_path = File.join(thumb_dir, filename + '_thumb_' + 128.to_s + ext)
+		t_path = File.join(thumb_dir, filename + '_thumb_' + 256.to_s + ext)
 		
 		if not File.exists?(t_path)
-			thumbnail(path,t_path, 128)
+			thumbnail(path,t_path, 256)
 		end
 	    send_file( t_path,
 	      :disposition => 'inline',
@@ -104,19 +104,20 @@ class ImagesController < ApplicationController
 	
     def thumbnail(source, target, width, height = nil)
 		return nil unless File.file?(source)
-		height ||= width
+		#height ||= width
 
 		img = Image.read(source).first
 		begin
 			rows, cols = img.rows, img.columns
 
 			source_aspect = cols.to_f / rows
-			target_aspect = width.to_f / height
-			thumbnail_wider = target_aspect > source_aspect
+			#target_aspect = width.to_f / height
+			#thumbnail_wider = target_aspect > source_aspect
+			thumbnail_wider = true
 
 			factor = thumbnail_wider ? width.to_f / cols : height.to_f / rows
 			img.sample!(factor)
-			img.crop!(CenterGravity, width, height)
+			#img.crop!(CenterGravity, width, height)
 
 			FileUtils.mkdir_p(File.dirname(target))
 			img.write(target) { self.quality = 75 }

@@ -11,13 +11,15 @@
 // about supported directives.
 //
 //= require jquery
+//= require unitegallery
 //= require jquery-ui
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
 //= require jquery.turbolinks
-//= require photoswipe
-//= require fancybox
+//= require2 photoswipe
+//= require2 fancybox
 //= require jquery-fileupload/basic
 //= require jquery-fileupload/jquery-ui
+//= require ug-theme-tiles
 //= require_tree .

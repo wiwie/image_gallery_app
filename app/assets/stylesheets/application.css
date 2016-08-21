@@ -18,6 +18,8 @@
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
  *= require rails_bootstrap_forms
+ *= require unite-gallery
+ *= require ug-theme-default
  *= require_self
  */
 
