@@ -74,6 +74,11 @@ class AlbumsController < ApplicationController
 
 	def create
 		@album = Album.new(user_params)
+		if @album.name.include? "/"
+			flash[:alert] = "The name of the album cannot contain any of the following characters: [/]"
+			redirect_to(action: 'new', id: @album)
+			return
+		end
 		@album.user = current_user
 		if @album.save
 			newDir = File.join(Rails.application.config.image_folder_path, @album.path, @album.name)
