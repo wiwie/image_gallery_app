@@ -76,7 +76,7 @@ class AlbumsController < ApplicationController
 		@album = Album.new(user_params)
 		if @album.name.include? "/"
 			flash[:alert] = "The name of the album cannot contain any of the following characters: [/]"
-			redirect_to(action: 'new', id: @album)
+			redirect_to(action: 'new', id: @album, album_id: @album.album_id)
 			return
 		end
 		@album.user = current_user
